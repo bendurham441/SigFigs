@@ -2,23 +2,27 @@
  * SigFig.java
  * @author Ben Durham
  * @version 20180215
- * Represents significant figures and provides operations for them
+ * Provides functionality for Significant Figures in java. This class allows for conversion 
+ * between number types and this type which has consideration for significant figures. This makes
+ * use of an ArrayList of characters to hold the value of a number and conserve significant
+ * figures. Allows for comparison and equivalence checking.
  */
 
 import java.util.ArrayList;
 
 // toDo
 // ----------------------
-// compareTo
 // addition/subtraction
 // multiplication/division
 // validation
-// equals
 // negative functionality
+// charat
+// number of SigFigs
 
 public class SigFig {
 	// Reference array of all digits
 	private static final char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
 	// Representation of the digits
 	private final ArrayList<Character> digits;	
 
@@ -167,6 +171,51 @@ public class SigFig {
 	 */
 	public int toInteger() {
 		return (int) this.toDouble();
+	}
+
+	/**
+	 * Checks to see if two SigFig instances are equal
+	 *
+	 * @param other	the other SigFig to compare it to
+	 * @return	whether or not they are equivalent
+	 */
+	public boolean equals(SigFig other) {
+		// Flag to hold whether or not the numbers are equivalent
+		boolean isEqual = true;
+
+		// Checks to see if the two SigFigs are of the same length
+		if (this.digits.size() == other.digits.size()) {
+			// checks to see if each corresponding digits are the same
+			for (int i = 0; i < this.digits.size(); i++) {
+				if (this.digits.get(i) != other.digits.get(i)) {
+					isEqual = false;
+					break;
+				}
+			}
+
+			// Return whether or not the numbers digits are equivalents
+			return isEqual;
+		}
+
+		// Return false if they are not of the same length
+		return false;
+	}
+
+	/**
+	 * Compares two SigFigs
+	 *
+	 * @param other	the other SigFig to compare it to
+	 * @return	1 if this is greater, -1 if other is greater, 0 if equal
+	 * @see		toDouble
+	 */
+	public int compareTo(SigFig other) {
+		// Converts the SigFig to a double for easy comparison
+		double other = other.toDouble();
+		double current = this.toDouble();
+
+		if (current > other) return 1;
+		else if (current < other) return -1
+		else return 0;
 	}
 
 	/**
