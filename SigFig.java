@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 // toDo
 // ----------------------
-// addition/subtraction
+// finish addition
+// subtraction
 // multiplication/division
 // validation
 // negative functionality
@@ -131,6 +132,39 @@ public class SigFig {
 		return -1;
 	}
 
+	public SigFig add(SigFig other) {
+		int aDecIndex = this.digits.size();
+		int bDecIndex = other.digits.size();
+
+		int diff = Math.abs(aDecIndex - bDecIndex);
+
+		// Insert code for if decIndicies are the same		
+
+		boolean aDecIndexGreater = aDecIndex > bDecIndex ? true : false;
+		
+		String result = "";
+
+		int resLength = this.digits.size() > other.digits.size() ? diff + this.digits.size() : diff + other.digits.size();
+
+		if (aDecIndexGreater) {
+			for (int i = 0; i < diff + resLength; i++) {
+				if (i < diff) result += this.digits.get(i);
+				else result += Integer.toString(toDigit(this.digits.get(i)) + 
+					toDigit(other.digits.get(i - diff)));
+			}
+		} else if (!aDecIndexGreater) {
+			for (int i = 0; i < diff + resLength; i++) {
+				if (i < diff) result += other.digits.get(i);
+				else result += Integer.toString(toDigit(this.digits.get(i - diff)) +
+					toDigit(other.digits.get(i)));
+			}
+		}
+
+		// Add precision change
+		SigFig res = new SigFig(result);
+		return res;
+	}
+
 	/**
 	 * Converts the number to double
 	 *
@@ -210,11 +244,11 @@ public class SigFig {
 	 */
 	public int compareTo(SigFig other) {
 		// Converts the SigFig to a double for easy comparison
-		double other = other.toDouble();
+		double otherNum = other.toDouble();
 		double current = this.toDouble();
 
-		if (current > other) return 1;
-		else if (current < other) return -1
+		if (current > otherNum) return 1;
+		else if (current < otherNum) return -1;
 		else return 0;
 	}
 
@@ -253,7 +287,8 @@ public class SigFig {
 		testChar = '0';
 		System.out.println(isNumber(testChar));
 
-		SigFig testFig = new SigFig("00.100");
-		System.out.println(testFig.toDouble());
+		SigFig testFig = new SigFig("1.00");
+		SigFig testFig2 = new SigFig("10.0");
+		System.out.println(testFig.add(testFig2));
 	}
 }
